@@ -10,7 +10,6 @@ class KategoriController extends Controller
 {
     public function tampil()
     {
-        // $kategoris = DB::table('kategoris')->get();
         $kategoris = Kategori::all();
         return view('kategori.daftar', ['kategoris' => $kategoris]);
     }
@@ -21,23 +20,26 @@ class KategoriController extends Controller
     }
 
     public function simpan(Request $request){
-        // DB::table('kategoris')->insert([
-        //     'nama' => $request->get('nama'),
-        //     'deskripsi' => $request->get('deskripsi'),
-        // ]);
+        $request->validate([
+            'nama' => 'required|string|max:50|regex:/^[^0-9]*$/',
+            'deskripsi' => 'nullable|string',
+        ], [
+            'nama.required' => 'Nama kategori wajib diisi.',
+            'nama.max' => 'Nama kategori maksimal 50 karakter.',
+            'nama.regex' => 'Nama kategori tidak boleh mengandung angka.',
+        ]);
 
-        // return redirect('/daftar-kategori');
         $kategori = new Kategori;
         $kategori->nama = $request->get('nama');
         $kategori->deskripsi = $request->get('deskripsi');
         $kategori->save();
 
-        return redirect('/daftar-kategori');
+        return redirect('/daftar-kategori')->with('sukses', 'Kategori berhasil ditambahkan!');
     }
 
     public function hapus(Kategori $kategori) {
         $kategori->delete();
-        return redirect('/daftar-kategori');
+        return redirect('/daftar-kategori')->with('sukses', 'Kategori berhasil dihapus!');
     }
 
     public function ubah(Kategori $kategori) {
@@ -45,12 +47,20 @@ class KategoriController extends Controller
     }
 
      public function update(Request $request, Kategori $kategori) {
-        
+        $request->validate([
+            'nama' => 'required|string|max:50|regex:/^[^0-9]*$/',
+            'deskripsi' => 'nullable|string',
+        ], [
+            'nama.required' => 'Nama kategori wajib diisi.',
+            'nama.max' => 'Nama kategori maksimal 50 karakter.',
+            'nama.regex' => 'Nama kategori tidak boleh mengandung angka.',
+        ]);
+
         $kategori->nama = $request->get('nama');
         $kategori->deskripsi = $request->get('deskripsi');
         $kategori->save();
         
-        return redirect('/daftar-kategori');
+        return redirect('/daftar-kategori')->with('sukses', 'Kategori berhasil diperbarui!');
     }
 
 }

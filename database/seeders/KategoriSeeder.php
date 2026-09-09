@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class KategoriSeeder extends Seeder
 {
@@ -13,14 +12,18 @@ class KategoriSeeder extends Seeder
      */
     public function run(): void
     {
-        $dataku = [
-            ['nama' => 'Makanan Berat', 'deskripsi' => 'Ini adalah makanan yang akan memberatkan perutmu'],
-            ['nama' => 'Makanan Ringan', 'deskripsi' => 'Ini adalah makanan yang akan meringankan perutmu'],
-            ['nama' => 'Jus', 'deskripsi' => 'Ini adalah minuman dari olahan buah'],
-            ['nama' => 'Soda', 'deskripsi' => 'Ini adalah minuman berkarbonasi'],
-            ['nama' => 'Susu', 'deskripsi' => 'Ini adalah minuman yang menyehatkan']
+        $data = [
+            ['nama' => 'Teknologi Informasi', 'deskripsi' => 'Materi seputar software, jaringan, aplikasi, dan sistem digital.'],
+            ['nama' => 'Manajemen Proyek', 'deskripsi' => 'Pengetahuan tentang perencanaan, koordinasi, dan evaluasi kerja tim.'],
+            ['nama' => 'Kesehatan & Kerja', 'deskripsi' => 'Tips kesehatan, ergonomi, dan produktivitas kerja yang sehat.'],
+            ['nama' => 'Bisnis Digital', 'deskripsi' => 'Strategi pemasaran dan pengelolaan bisnis berbasis digital.'],
         ];
-        
-        DB::table('kategoris')->insert($dataku);
+
+        foreach ($data as $item) {
+            DB::table('kategoris')->updateOrInsert(
+                ['nama' => $item['nama']],
+                $item
+            );
+        }
     }
 }
